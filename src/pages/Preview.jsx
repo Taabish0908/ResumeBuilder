@@ -4,16 +4,25 @@ import { dummyResumeData } from "../assets/assets";
 import ResumePreview from "../components/ResumePreview";
 import { ArrowLeftIcon } from "lucide-react";
 import Loader from "../components/Loader";
+import { api } from "../configs/api";
 
 const Preview = () => {
   const { resumeId } = useParams();
   const [loading, setLoading] = React.useState(true);
   const [resumeData, setResumeData] = React.useState(null);
   const loadResume = async () => {
-    setResumeData(
-      dummyResumeData.find((resume) => resume._id === resumeId) || null
-    );
-    setLoading(false);
+    // setResumeData(
+    //   dummyResumeData.find((resume) => resume._id === resumeId) || null
+    // );
+    // setLoading(false);
+    try {
+      const { data } = await api.get(`/api/resume/public/` + resumeId);
+      setResumeData(data.resume);
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
   useEffect(() => {
     loadResume();
@@ -21,7 +30,7 @@ const Preview = () => {
 
   return resumeData ? (
     <div className="bg-slate-100">
-      <div className="max-w-3xl mx-auto py-10">
+      <div className=" max-w-3xl mx-auto py-10">
         <ResumePreview
           data={resumeData}
           template={resumeData.template}

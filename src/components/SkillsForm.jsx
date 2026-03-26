@@ -22,10 +22,10 @@ const SkillsForm = ({ data, onChange }) => {
   return (
     <div className="space-y-4">
       <div>
-        <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
+        <h3 className="flex items-center gap-2 text-lg font-semibold text-white">
           Skills
         </h3>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-white">
           Add your technical and soft skills
         </p>
       </div>
@@ -41,7 +41,7 @@ const SkillsForm = ({ data, onChange }) => {
         <button
           onClick={addSkill}
           disabled={!skill.trim()}
-          className="flex items-center gap-2 px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex items-center gap-2 px-4 py-2 text-sm bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Plus className="size-4" />
           Add
@@ -52,7 +52,7 @@ const SkillsForm = ({ data, onChange }) => {
           {data.map((skill, index) => (
             <span
               key={index}
-              className="flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+              className="flex items-center gap-1 px-3 py-1 bg-white text-black rounded-full text-sm"
             >
               {skill}
               <button

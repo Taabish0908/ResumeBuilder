@@ -1,7 +1,12 @@
 import { Lock, Mail, User2Icon } from "lucide-react";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../app/slices/authSlice";
+import toast from "react-hot-toast";
+import { api } from "../configs/api";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const query = new URLSearchParams(window.location.search);
   const urlState = query.get("state");
   const [state, setState] = React.useState(urlState || "login");
@@ -14,6 +19,15 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const {data} = await api.post(`/api/user/${state}`, formData);
+      dispatch(login(data));
+      // dispatch(login({ token: data.token}));
+      localStorage.setItem("token", data.token.token);
+      toast.success(data.message);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+    }
   };
 
   const handleChange = (e) => {
@@ -21,15 +35,15 @@ const Login = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-[#0B0014] via-[#120016] to-[#1a001f]">
       <form
         onSubmit={handleSubmit}
-        className="sm:w-[350px] w-full text-center border border-gray-300/60 rounded-2xl px-8 bg-white"
+        className="sm:w-[350px] w-full text-center border border-pink-300/60 rounded-2xl px-8 bg-slate-950"
       >
-        <h1 className="text-gray-900 text-3xl mt-10 font-medium">
+        <h1 className="text-white text-3xl mt-10 font-medium">
           {state === "login" ? "Login" : "Sign up"}
         </h1>
-        <p className="text-gray-500 text-sm mt-2">
+        <p className="text-white text-sm mt-2">
           Please {state} in to continue
         </p>
         {state !== "login" && (
@@ -70,14 +84,14 @@ const Login = () => {
             required
           />
         </div>
-        <div className="mt-4 text-left text-green-500">
+        <div className="mt-4 text-left text-pink-600">
           <button className="text-sm" type="reset">
             Forget password?
           </button>
         </div>
         <button
           type="submit"
-          className="mt-2 w-full h-11 rounded-full text-white bg-green-500 hover:opacity-90 transition-opacity"
+          className="mt-2 w-full h-11 rounded-full text-white bg-pink-600 hover:opacity-90 transition-opacity"
         >
           {state === "login" ? "Login" : "Sign up"}
         </button>
@@ -90,7 +104,7 @@ const Login = () => {
           {state === "login"
             ? "Don't have an account?"
             : "Already have an account?"}{" "}
-          <a href="#" className="text-green-500 hover:underline">
+          <a href="#" className="text-pink-600 hover:underline">
             click here
           </a>
         </p>

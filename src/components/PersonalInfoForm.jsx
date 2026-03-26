@@ -69,10 +69,10 @@ const PersonalInfoForm = ({
   ];
   return (
     <div>
-      <h3 className="text-lg font-semibold text-gray-900">
+      <h3 className="text-lg font-semibold text-white">
         Personal Information
       </h3>
-      <p className="text-sm text-gray-600">
+      <p className="text-sm text-white">
         Get Started with the personal information
       </p>
       <div className="flex items-center gap-2">
@@ -88,7 +88,7 @@ const PersonalInfoForm = ({
               className="w-16 h-16 object-cover mt-5 rounded-full ring ring-slate-300 hover:opacity-80"
             />
           ) : (
-            <div className="inline-flex items-center gap-2 mt-5 text-slate-600 hover:text-slate-700 cursor-pointer">
+            <div className="inline-flex items-center gap-2 mt-5 text-white hover:text-pink-700 cursor-pointer">
               <User className="size-10 p-2.5 border rounded-full" />
               upload user image
             </div>
@@ -103,7 +103,7 @@ const PersonalInfoForm = ({
         {typeof data.image === "object" && (
           <div className="flex flex-col gap-1 pl-4 text-sm">
             <p> Remove Background</p>
-            <label className="relative inline-flex items-center cursor-pointer text-gray-900 gap-3">
+            <label className="relative inline-flex items-center cursor-pointer text-white gap-3">
               <input
                 type="checkbox"
                 className="sr-only peer"
@@ -120,7 +120,7 @@ const PersonalInfoForm = ({
         const Icon = field.icon;
         return (
           <div key={field.key} className="space-y-1 mt-5">
-            <label className="flex items-center gap-2 text-sm font-medium text-gray-600">
+            <label className="flex items-center gap-2 text-sm font-medium text-white">
               <Icon className="size-4" />
               {field.label}
               {field.required && <span className="text-red-500">*</span>}

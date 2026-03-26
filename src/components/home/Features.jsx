@@ -7,14 +7,14 @@ const Features = () => {
   return (
     <div
       id="features"
-      className="flex flex-col items-center my-10 scroll-mt-12"
+      className="flex flex-col items-center py-10 scroll-mt-12 text-white"
     >
-      <div className="flex items-center gap-2 text-sm text-green-600 bg-green-400/10 rounded-full px-6 py-1.5">
+      <div className="flex items-center gap-2 text-sm text-white  rounded-full px-6 py-1.5 bg-pink-700 hover:bg-pink-800 active:scale-95  ring-offset-1 ring-1 ring-pink-400   transition-colors">
         <Zap width={14} />
         <span>Simple Process</span>
       </div>
-      <Title
-        title="Build your Resme"
+      <Title className="text-white"
+        title="Build your Resume"
         description="Our streamlined process makes it easy to create a standout resume that highlights your skills and experience with AI-Powered tools and features"
       />
       <div className="flex flex-col md:flex-row items-center justify-center xl:-mt-10">

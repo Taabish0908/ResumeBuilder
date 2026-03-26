@@ -1,7 +1,13 @@
-import { Briefcase, Plus, Sparkles, Trash2 } from "lucide-react";
+import { Briefcase, Loader2, Plus, Sparkles, Trash2 } from "lucide-react";
 import React from "react";
+import { useSelector } from "react-redux";
+import { api } from "../configs/api";
+import toast from "react-hot-toast";
 
 const ExperienceForm = ({ data, onChange }) => {
+  const { token } = useSelector((state) => state.auth);
+  const authToken = token.token || token;
+  const [generatingIndex, setGeneratingIndex] = React.useState(-1);
   const addExperience = () => {
     const newExperience = {
       company: "",
@@ -26,25 +32,48 @@ const ExperienceForm = ({ data, onChange }) => {
     };
     onChange(updatedExperiences);
   };
+
+  const generateDescription = async (index) => {
+    setGeneratingIndex(index);
+    const experience = data[index];
+    const prompt = `Enhance this job description: ${experience.description} for the role of ${experience.position} at ${experience.company}`;
+    try {
+      const { data } = await api.post(
+        "/api/ai/enhance-job-desc",
+        { userContent: prompt },
+        {
+          headers: {
+            Authorization: authToken,
+          },
+        }
+      );
+      updateExperience(index, "description", data.enhancedSummary);
+      setGeneratingIndex(-1);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+    } finally {
+      setGeneratingIndex(-1);
+    }
+  };
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
+          <h3 className="flex items-center gap-2 text-lg font-semibold text-white">
             Professional Experience
           </h3>
-          <p className="text-sm text-gray-500">Add your work experience</p>
+          <p className="text-sm text-white">Add your work experience</p>
         </div>
         <button
           onClick={addExperience}
-          className="flex items-center gap-2 px-3 py-1 text-sm bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors"
+          className="flex items-center gap-2 px-3 py-1 text-sm bg-pink-700 text-white rounded-lg hover:bg-pink-800 transition-colors"
         >
           <Plus className="size-4" />
           Add Experience
         </button>
       </div>
       {data.length === 0 ? (
-        <div className="text-center py-8 text-gray-500">
+        <div className="text-center py-8 text-white">
           <Briefcase className="w-12 h-12 mx-auto mb-3 text-gray-300" />
           <p> No work experience added yet</p>
           <p className="text-sm">
@@ -92,7 +121,7 @@ const ExperienceForm = ({ data, onChange }) => {
                     updateExperience(index, "start_date", e.target.value)
                   }
                   type="month"
-                  className="px-3 py-2 text-sm rounded-lg"
+                  className="px-3 py-2 text-sm rounded-lg text-white"
                 />
                 <input
                   value={experience.end_date || ""}
@@ -101,7 +130,7 @@ const ExperienceForm = ({ data, onChange }) => {
                   }
                   type="month"
                   disabled={experience.is_current}
-                  className="px-3 py-2 text-sm rounded-lg disabled:bg-gray-100"
+                  className="px-3 py-2 text-sm rounded-lg disabled:bg-gray-500"
                 />
               </div>
               <label className="flex items-center gap-2">
@@ -115,19 +144,31 @@ const ExperienceForm = ({ data, onChange }) => {
                       e.target.checked ? true : false
                     )
                   }
-                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="rounded border-pink-300 text-pink-600 focus:ring-pink-500"
                 />
-                <span className="text-sm text-gray-700">
+                <span className="text-sm text-white">
                   Currently working here
                 </span>
               </label>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-sm font-medium text-gray-700">
+                  <label className="text-sm font-medium text-white">
                     Job Description
                   </label>
-                  <button className="flex items-center gap-1 px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition-colors disabled:opacity-50">
-                    <Sparkles className="w-3 h-3" />
+                  <button
+                    onClick={() => generateDescription(index)}
+                    disabled={
+                      generatingIndex === index ||
+                      !experience.position ||
+                      !experience.company
+                    }
+                    className="flex items-center gap-1 px-2 py-1 text-xs bg-pink-700 text-white rounded hover:bg-pink-800 transition-colors disabled:opacity-50"
+                  >
+                    {generatingIndex === index ? (
+                      <Loader2 className="w-3 h-3 animate-spin" />
+                    ) : (
+                      <Sparkles className="w-3 h-3" />
+                    )}
                     Enhance with AI
                   </button>
                 </div>

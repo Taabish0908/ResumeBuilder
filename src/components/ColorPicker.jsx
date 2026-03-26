@@ -21,7 +21,7 @@ const ColorPicker = ({ selectedColor, onChange }) => {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1 text-sm text-purple-600 bg-gradient-to-br from-purple-50 to-purple-100 ring-purple-300 hover:ring transition-all px-3 py-2 rounded-lg"
+        className="flex  gap-1 text-sm bg-pink-700 hover:bg-pink-800 active:scale-95 text-white ring-offset-1 ring-1 ring-pink-400  items-center transition-colors px-3 py-2 rounded-lg"
       >
         <Palette size={16} />
         <span className="max-sm:hidden">Accent</span>

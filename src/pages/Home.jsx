@@ -7,8 +7,8 @@ import Testimonial from "../components/home/Testimonial";
 
 const Home = () => {
   return (
-    <div>
-      <Banner />
+    <div className="min-h-screen bg-gradient-to-b from-[#0B0014] via-[#120016] to-[#1a001f] text-white">
+      {/* <Banner /> */}
       <Hero />
       <Features />
       <Testimonial />
